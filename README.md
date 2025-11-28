@@ -16,14 +16,13 @@ This project was submitted as part of the **Frontend Developer Assignment**.
 
 ## 🚀 Live Demo (if deployed)
 
-👉 **URL:** _Add your deployment link here_  
-(Example: https://your-app.vercel.app)
+👉 **URL:** https://task-manager-frontend-task-olive.vercel.app/
 
 ---
 
 ## 📦 GitHub Repository
 
-👉 **Repo Link:** _Add your GitHub repo link here_
+👉 **Repo Link:** https://github.com/knull23/Task-Manager-Frontend-Task
 
 ---
 
@@ -75,6 +74,7 @@ This project was submitted as part of the **Frontend Developer Assignment**.
 
 ---
 
+### **Project Structure**
 project/
 │── src/
 │ ├── components/
@@ -196,9 +196,8 @@ Install deps	npm install
 Dev server	npm run dev
 Build	npm run build
 Preview prod build	npm run preview
-📸 Screenshots (Optional)
 
-Add screenshots inside /screenshots folder and reference them here:
+📸 Screenshots 
 
 <img width="1383" height="900" alt="image" src="https://github.com/user-attachments/assets/97b1537f-ac83-4c85-8d1e-1742184e83a5" />
 <img width="971" height="866" alt="image" src="https://github.com/user-attachments/assets/3224d701-3e2d-4b83-9af5-5e1ddd2522b9" />
