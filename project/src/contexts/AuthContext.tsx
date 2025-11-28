@@ -21,10 +21,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // -------------------------
+  // Load Auth Session & User
+  // -------------------------
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+
       if (session?.user) {
         loadProfile(session.user.id);
       } else {
@@ -36,6 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       (async () => {
         setSession(session);
         setUser(session?.user ?? null);
+
         if (session?.user) {
           await loadProfile(session.user.id);
         } else {
@@ -48,6 +53,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  // -------------------------
+  // Load or Auto-Create Profile
+  // -------------------------
   const loadProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase
@@ -57,7 +65,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
 
       if (error) throw error;
-      setProfile(data);
+
+      // If profile doesn't exist yet, create it automatically
+      if (!data && user) {
+        console.log('[loadProfile] No profile found. Creating new profile...');
+        const { data: inserted, error: insertError } = await supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            email: user.email!,
+            full_name: user.email!.split('@')[0], // default name
+            bio: '',
+          })
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error('[loadProfile] Error creating profile:', insertError);
+        } else {
+          setProfile(inserted);
+        }
+      } else {
+        setProfile(data);
+      }
     } catch (error) {
       console.error('Error loading profile:', error);
     } finally {
@@ -65,6 +95,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // -------------------------
+  // SIGNUP
+  // -------------------------
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -74,7 +107,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (error) return { error };
 
+      // If user credentials returned, attempt creating profile
       if (data.user) {
+        console.log('[signUp] Creating profile for:', data.user.id);
+
         const { error: profileError } = await supabase
           .from('profiles')
           .insert({
@@ -84,7 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           });
 
         if (profileError) {
-          console.error('Error creating profile:', profileError);
+          console.error('[signUp] Error creating profile:', profileError);
         }
       }
 
@@ -94,6 +130,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // -------------------------
+  // SIGNIN
+  // -------------------------
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -102,24 +141,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
+  // -------------------------
+  // SIGNOUT
+  // -------------------------
   const signOut = async () => {
     await supabase.auth.signOut();
   };
 
+  // -------------------------
+  // UPDATE PROFILE
+  // -------------------------
   const updateProfile = async (updates: Partial<Profile>) => {
     if (!user) return { error: new Error('No user logged in') };
 
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update(updates)
-        .eq('id', user.id);
+      console.log('[updateProfile] Updating profile:', updates);
 
-      if (error) throw error;
+      const payload = {
+        ...updates,
+        updated_at: new Date().toISOString(),
+      };
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .update(payload)
+        .eq('id', user.id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('[updateProfile] Error updating profile:', {
+          code: error.code,
+          message: error.message,
+          details: (error as any).details,
+        });
+        return { error };
+      }
+
+      console.log('[updateProfile] Updated row:', data);
 
       await loadProfile(user.id);
       return { error: null };
     } catch (error) {
+      console.error('[updateProfile] Unexpected error:', error);
       return { error: error as Error };
     }
   };
