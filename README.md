@@ -200,10 +200,10 @@ Preview prod build	npm run preview
 
 Add screenshots inside /screenshots folder and reference them here:
 
-![Login Page](screenshots/login.png)<img width="1383" height="900" alt="image" src="https://github.com/user-attachments/assets/97b1537f-ac83-4c85-8d1e-1742184e83a5" />
+<img width="1383" height="900" alt="image" src="https://github.com/user-attachments/assets/97b1537f-ac83-4c85-8d1e-1742184e83a5" />
 <img width="971" height="866" alt="image" src="https://github.com/user-attachments/assets/3224d701-3e2d-4b83-9af5-5e1ddd2522b9" />
-![Profile Page](screenshots/profile.png)<img width="1697" height="898" alt="image" src="https://github.com/user-attachments/assets/067aca6e-57e7-4414-8a76-0ff806758476" />
-![Tasks Page](screenshots/tasks.png)<img width="1848" height="764" alt="image" src="https://github.com/user-attachments/assets/882ff890-cdc2-4e95-bd06-7621bd38c7b3" />
+<img width="1697" height="898" alt="image" src="https://github.com/user-attachments/assets/067aca6e-57e7-4414-8a76-0ff806758476" />
+<img width="1848" height="764" alt="image" src="https://github.com/user-attachments/assets/882ff890-cdc2-4e95-bd06-7621bd38c7b3" />
 
 
 📤 Deployment Instructions
@@ -238,9 +238,6 @@ Email: saumil.upadhyay
 This project was built and completed as part of the Frontend Developer Assignment.
 Feel free to reach out for any additional information or clarification.
 
-
 ---
-
-
 # 📁 Project Structure
 
