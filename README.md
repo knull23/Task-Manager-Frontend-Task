@@ -230,13 +230,13 @@ Add env variables
 📞 Contact
 
 Developer: Saumil Upadhyay
-Email: saumil.upadhyay
+Email: saumil.upadhyay@gmail.com
 
 🎉 Thank You
 
 This project was built and completed as part of the Frontend Developer Assignment.
 Feel free to reach out for any additional information or clarification.
 
+
 ---
 # 📁 Project Structure
-
